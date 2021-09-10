@@ -10,7 +10,7 @@ sudo sh get-docker.sh --mirror Aliyun
 
 ### 2、启动服务
 
-Systemctl status |start |stop |restart docker
+systemctl status |start |stop |restart docker
 
 ### 3、检测docker启动成功
 
@@ -24,7 +24,7 @@ systemctl enable docker
 
 sudo groupadd docker
 
-Sudo usermod -aG docker $USER
+sudo usermod -aG docker $USER
 
 ### 6、重启docker服务
 
