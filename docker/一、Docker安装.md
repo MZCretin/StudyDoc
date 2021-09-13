@@ -30,3 +30,30 @@ sudo usermod -aG docker $USER
 
 systemctl restart docker
 
+### 7、docker引擎和帮助命令
+
+docker info ：里面有server和client，它是个cs架构。
+
+docker执行命令格式（输入docker查看）：
+
+docker [options(可以省略)] command (具体命令不可省略)
+
+### 8、镜像加速
+
+您可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器
+
+```java
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://7xy60x72.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+
+
+
+
