@@ -190,7 +190,89 @@ WORKDIR tomcat #直接进入tomcat命令
 VOLUME ["/data"]
 ```
 
+例如：
 
+```dockerfile
+FROM centos:7
+#RUN yum install -y vim
+RUN ["yum","install","-y","vim"] #json数据格式 功能是一样
+EXPOST 8080 # 暴露端口，只有暴露了才能在容器外映射
+EXPOST 8081 # 可以暴露多个端口
+WORKDIR /data
+WORKDIR aa # 现在进入之后就会直接进入/data/aa
+COPY aa.txt /data/aa # 将aa.txt 拷贝到/data/aa
+ADD bb.txt /data/aa # 将bb.txt 拷贝到/data/aa
+ADD https://mirrors.bfsu.edu.cn/apache/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61.tar.gz /data/bb # 可以直接添加远程文件到/data/bb 构建镜像的时候会自动去下载
+ADD apache-tomcat-8.5.61.tar.gz /data/bb #如果添加本地tar文件到镜像目录，系统会自动解压该tar文件
+RUN mv apache-tomcat-8.5.61 tomcat #重命名当前文件夹为tomcat
+WORKDIR tomcat #直接进入tomcat命令
+VOLUME /data/bb/tomcat/webapps # 将/data/bb/tomcat/webapps 挂载到宿主机
+```
 
+### 5.8 ENV
 
+用来为构建镜像设置环境变量，这个值将出现在构建阶段中所有后续指令的环境中
+
+语法：
+
+```dockerfile
+ENV <key> <value>
+ENV <key>=<value> ...
+```
+
+例如：
+
+```dockerfile
+FROM centos:7
+#RUN yum install -y vim
+RUN ["yum","install","-y","vim"] #json数据格式 功能是一样
+EXPOST 8080 # 暴露端口，只有暴露了才能在容器外映射
+EXPOST 8081 # 可以暴露多个端口
+WORKDIR /data
+WORKDIR aa # 现在进入之后就会直接进入/data/aa
+ENV BASE_DIR /data/bb #定义一个环境变量
+COPY aa.txt $BASE_DIR # 将aa.txt 拷贝到/data/aa
+ADD bb.txt $BASE_DIR # 将bb.txt 拷贝到/data/aa
+ADD https://mirrors.bfsu.edu.cn/apache/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61.tar.gz $BASE_DIR # 可以直接添加远程文件到/data/bb 构建镜像的时候会自动去下载
+ADD apache-tomcat-8.5.61.tar.gz $BASE_DIR #如果添加本地tar文件到镜像目录，系统会自动解压该tar文件
+RUN mv apache-tomcat-8.5.61 tomcat #重命名当前文件夹为tomcat
+WORKDIR tomcat #直接进入tomcat命令
+VOLUME $BASE_DIR/tomcat/webapps # 将/data/bb/tomcat/webapps 挂载到宿主机
+```
+
+### 5.9 ENTRYPOINT CMD
+
+用来指定容器启动时执行的命令和CMD类似
+
+语法：
+
+```dockerfile
+["executable","param1","param2"]
+ENTRYPOINT command param1 param2
+
+ENTRYPOINT指令，往往用于设置容器启动后的第一个命令，这对一个容器来说往往是固定的。
+CMD指令，往往用于设置容器启动的第一个命令的默认参数，这对于一个容器来说是可以变化的。
+```
+
+例如：
+
+```dockerfile
+FROM centos:7
+#RUN yum install -y vim
+RUN ["yum","install","-y","vim"] #json数据格式 功能是一样
+EXPOST 8080 # 暴露端口，只有暴露了才能在容器外映射
+EXPOST 8081 # 可以暴露多个端口
+WORKDIR /data
+WORKDIR aa # 现在进入之后就会直接进入/data/aa
+ENV BASE_DIR /data/bb #定义一个环境变量
+COPY aa.txt $BASE_DIR # 将aa.txt 拷贝到/data/aa
+ADD bb.txt $BASE_DIR # 将bb.txt 拷贝到/data/aa
+ADD https://mirrors.bfsu.edu.cn/apache/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61.tar.gz $BASE_DIR # 可以直接添加远程文件到/data/bb 构建镜像的时候会自动去下载
+ADD apache-tomcat-8.5.61.tar.gz $BASE_DIR #如果添加本地tar文件到镜像目录，系统会自动解压该tar文件
+RUN mv apache-tomcat-8.5.61 tomcat #重命名当前文件夹为tomcat
+WORKDIR tomcat #直接进入tomcat命令
+VOLUME $BASE_DIR/tomcat/webapps # 将/data/bb/tomcat/webapps 挂载到宿主机
+ENTRYPOINT ["ls"] # 用于指定进入容器之后执行ls命令，尽量使用json数组的方式
+CMD ["/data/bb"] # 用于指定进入容器之后执行的命令的参数 但是这个参数是后面可以被覆盖的，尽量使用json数组的方式
+```
 
