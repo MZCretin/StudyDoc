@@ -61,3 +61,4 @@ public class ConsulClientApplication {
 
 ### 2.5 一些细节问题
 
+如果你直接启动consul client 出现如下问题
