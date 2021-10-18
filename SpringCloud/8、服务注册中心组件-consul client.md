@@ -61,4 +61,8 @@ public class ConsulClientApplication {
 
 ### 2.5 一些细节问题
 
-如果你直接启动consul client 出现如下问题
++ 1、如果你直接启动consul client 出现如下问题
+
+  ![image-20211018212526023](./images/image-20211018212526023.png)
+
+  原因：consul server检测所有客户端的心跳，但是发送心跳时client必须给予响应该服务才能正常使用，在现有客户端中我们没有引入健康检查依赖，所以导致健康检查始终不通过，导致服务不能正常使用。
