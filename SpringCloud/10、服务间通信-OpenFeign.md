@@ -209,4 +209,38 @@ feign.client.config.PRODUCTS.connectTimeout=5000 #配置指定服务连接超时
 feign.client.config.PRODUCTS.readTimeout=5000 #配置指定服务等待超时时间 其中PRODUCTS是服务id
 ```
 
-#### 5.2.2 修改
+#### 5.2.2 修改openfeign默认调用所有服务超时时间
+
+```properties
+feign.client.config.default.connectTimeout=5000 #配置所有服务连接超时时间
+feign.client.config.default.readTimeout=5000 #配置所有服务等待超时时间
+```
+
+## 6、OpenFeign日志展示
+
+OpenFeign 是一个伪HttpClient客户端对象，用来帮助我们完成服务间通信，底层用http协议，完成服务间调用。
+
+日志：OpenFeign为了更好方便在开发过程中调试OpenFeign数据传输，和响应处理，添加了日志功能。 OpenFeign对日志的处理非常灵活可以为每个OpenFeign客户端指定日志记录策略，每个客户端都会创建一个logger，默认情况下logger的名称是OpenFeign的全限定名，需要注意的是，OpenFeign的日志打印只会对DEBUG级别做出响应。
+
+我们可以为OpenFeign客户端配置各自的logger.level对象，告诉OpenFeign记录哪些日志，logger.level有以下的几种值。
+
+```apl
+NONE 不记录任何日志
+BASIC 仅仅会记录请求方法，url，响应状态和执行时间
+HEADERS 记录Basic级别的基础上，记录请求和响应的header
+FULL 记录请求和响应的header,body和元元素
+```
+
+###  6.1 配置展示日志
+
+```properties
+# 对客户端进行debug日志响应
+logging.level.com.cretin.feignclient=debug
+# 对指定服务id进行日志监控
+feign.client.config.PRODUCTS.loggerLevel=FULL 
+# 对所有的服务进行日志监控
+feign.client.config.default.loggerLever=FULL
+```
+
+
+
