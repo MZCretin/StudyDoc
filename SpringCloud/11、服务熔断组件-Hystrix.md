@@ -51,3 +51,115 @@
 #### 1.4.3 总结
 
 熔断必会触发降级，所以熔断也是降级的一种，区别在于熔断是对调用链路的保护，而降级是对系统过载的一种保护处理。
+
+### 1.5 Hystrix 
+
+Hystrix是一个用于处理分布式系统的延迟和容错的开源库，在分布式系统中，许多依赖不可避免的会调用失败，超时异常等，Hystrix能够保证在一个依赖出现问题的情况下，不会导致整体服务失败，避免级联故障，提供分布式系统的弹性。
+
+## 2、使用
+
+### 2.1 引入依赖
+
+```xml
+<!--        springboot-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+<!--        consul-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+
+<!--       健康管理-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+<!--        openfeign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.2.3.RELEASE</version>
+        </dependency>
+
+<!--        hystrix-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+```
+
+### 2.2 添加注解
+
+```java
+@SpringBootApplication //springboot应用
+@EnableFeignClients //服务间通信
+@EnableDiscoveryClient //服务注册中心
+@EnableCircuitBreaker //服务熔断
+public class HystrixClientProductApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(HystrixClientProductApplication.class,args);
+    }
+}
+```
+
+### 2.3 熔断处理
+
+#### 2.3.1 服务端Controller上熔断处理
+
+```java
+@RestController
+@ResponseBody
+@RequestMapping("/product")
+public class ProductController {
+
+    @Autowired
+    private ProductClient productClient;
+
+    @RequestMapping("/demo")
+  	//如果同时配置了错误处理和默认错误处理 那么优先使用错误处理
+    @HystrixCommand(fallbackMethod = "demoFailBack",defaultFallback = "defaultFailBack")
+    public String demo(@RequestParam("id") Integer id) {
+        return "demo ok!!! "+productClient.demo(id);
+    }
+
+    //参数一致
+    public String demoFailBack(Integer id){
+        return "product 服务不小心被熔断了";
+    }
+
+  	//参数一致
+    public String defaultFailBack(Integer id){
+        return "服务异常";
+    }
+}
+```
+
+#### 2.3.2 客户端OpenFeign降级熔断 
+
+```java
+@FeignClient(value = "HYSTRIXCLIENTUSER",fallback = ProductClientFailBack.class)
+public interface ProductClient {
+	
+    @RequestMapping("/user/demo")
+    String demo(@RequestParam("id") Integer id);
+
+}
+
+@Component
+public class ProductClientFailBack implements ProductClient{
+    @Override
+    public String demo(Integer id) {
+        return "不好意思被熔断了";
+    }
+}
+```
+
+### 2.4  Hystrix仪表盘组件
+
+Hystrix DashBoard：用来显示状态信息。监控每一个@HystrixCommond注解创建一组度量，构建一组信息，然后通过图形化方式展示当前方法的状态信息。不过因为里面有些bug，使用体验不好，就不往后面扩展了~
