@@ -79,4 +79,4 @@ public class ConfigServerApplication {
 
 ### 2.2 client 配置
 
-![image-20211025094206943](./images/image-20211025094206943.png)
+![image-20211025094206943](/images/image-20211025094206943.png)
