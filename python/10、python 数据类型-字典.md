@@ -184,7 +184,7 @@ v1 = "mxn"v2 = set(v1)print(v2) # {"m","x","n"}v1 = [1,2,3,4,5,6,7,7,1]v2 = set(
 
 + ### 对比和嵌套
 
-  ![image-20211003230304589](/Users/cretin/document/StudyDoc/python/images/image-20211003230304589.png)
+  ![image-20211003230304589](./images/image-20211003230304589.png)
 
   注意：由于True和False本质上存储的是1和0，而集合又不允许重复，所以在整数0，1，和False、True出现在集合中会出现如下现象:
 
