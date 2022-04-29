@@ -2,7 +2,7 @@
 
 驾考题库API接口，这个是RollToolsApi通用系列接口的其中一个，内部包含了2个小接口，公安部最新驾照考试题库，分小车、客车、货车、摩托车4类，科目一和科目四2种。
 
-查看接口完整信息：https://www.mxnzp.com/doc/detail?id=28
+查看接口完整信息：https://www.mxnzp.com/doc/detail?id=29
 
 RollToolsApi通用系列接口包含多很多免费通用的API接口，利用这些接口可以帮你实现去开发出很多功能丰富，服务稳定的小程序，APP或者网页，无论是练手还是实战都是不错的选择。所有接口的列表可以在此查看 https://www.mxnzp.com/doc/list
 
