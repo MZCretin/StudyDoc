@@ -55,11 +55,13 @@ table是数据库的基本组成单元，所有的数据都以表格的形式组
 
 + 2、查看有哪些数据库
 
-  show database：（这个不是SQL语句，属于MySql的命令）
+  show database：（这个不是SQL语句，属于MySql的命令） 
+
+  select database(); //查看当前使用的数据库
 
 + 3、创建属于我们自己的数据库
 
-  create datebase mxn; （这个不是SQL语句，属于MySql命令）
+  create datebase [if not exists] mxn [default charset 字符集] [collate 排序规则]; （这个不是SQL语句，属于MySql命令）
 
 + 4、使用mxn数据
 
