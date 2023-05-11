@@ -62,6 +62,7 @@ ALTER TABLE 表名 DROP 字段名
 
 ```sql
 ALTER TABLE 表名 RENAME TO 新表名
+RENAME TABLE 表名 TO 新表名
 ```
 
 删除表
