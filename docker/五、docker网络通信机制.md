@@ -16,7 +16,7 @@ docker network ls
 
 b、创建自定义网桥
 
-docker create ems(网桥名称) ====》 docker create -d bridge ems(网桥)
+docker create ems(网桥名称) ====》 docker create  bridge ems(网桥)
 
 docker run -d -p 8082:8080 --network ems --name mytomcat01 tomcat:8.0-jre8 
 

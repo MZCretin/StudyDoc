@@ -1,4 +1,4 @@
-### 1、配置目录
+### `1、配置目录
 
 ```java
 /etc/nginx/nginx.conf
